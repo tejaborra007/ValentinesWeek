@@ -1,5 +1,5 @@
 <div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://t3.ftcdn.net/jpg/02/45/30/00/240_F_245300001_rExs4IFhLcgNjPXl1oA9jL4M0tLf5XZn.jpg" />
+<img width="1200" height="475" alt="GHBanner" src="https://t3.ftcdn.net/jpg/18/52/85/40/240_F_1852854093_xcfGoC2n1ueiC85tmyZ3qNMiyO1gJEVF.jpg" />
 </div>
 
 # Run and deploy your ValentinesWeek
@@ -14,6 +14,5 @@ This contains everything you need to run your app locally.
 
 1. Install dependencies:
    `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
+2. Run the app:
    `npm run dev`
