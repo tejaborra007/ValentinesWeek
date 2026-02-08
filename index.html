@@ -6,6 +6,8 @@
   <title>Eternal Valentine 3D</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+  <!-- Babel standalone to allow TSX to run directly in the browser on GitHub Pages -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <style>
     :root {
       --bg-color: #fff5f7;
@@ -86,5 +88,7 @@
 </head>
 <body>
   <div id="root"></div>
+  <!-- Entry point for the application - uses Babel to handle TSX -->
+  <script type="text/babel" data-type="module" src="index.tsx"></script>
 </body>
 </html>
