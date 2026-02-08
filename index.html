@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Eternal Valentine 3D</title>
+  <title>Eternal Valentine 3D | A Week of Love</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600;800;900&display=swap" rel="stylesheet">
   
@@ -12,12 +12,12 @@
     window.process = { env: { API_KEY: undefined } };
   </script>
 
-  <!-- Babel standalone to transpile TSX on the fly -->
+  <!-- Babel standalone to transpile TSX on the fly in the browser -->
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   
   <style>
     :root { --bg-color: #fff5f7; }
-    body { font-family: 'Poppins', sans-serif; overflow-x: hidden; background: var(--bg-color); color: #1f2937; }
+    body { font-family: 'Poppins', sans-serif; overflow-x: hidden; background: var(--bg-color); color: #1f2937; margin: 0; }
     .font-cursive { font-family: 'Dancing Script', cursive; }
     @keyframes float {
       0% { transform: translateY(0px) rotate(0deg) scale(1); }
@@ -62,15 +62,14 @@
 </head>
 <body>
   <div id="root">
-    <!-- Fallback loading message if JS fails -->
-    <div class="h-screen w-screen flex items-center justify-center bg-pink-50">
-      <div class="text-center">
-        <div class="text-4xl animate-bounce mb-4">💖</div>
-        <p className="text-pink-600 font-bold">Preparing your Valentine Experience...</p>
-      </div>
+    <div class="h-screen w-screen flex flex-col items-center justify-center bg-pink-50">
+      <div class="text-6xl animate-bounce mb-4">💖</div>
+      <p class="text-pink-600 font-bold text-xl animate-pulse">Initializing Romance...</p>
+      <p class="text-pink-400 text-sm mt-2">If this takes too long, check your internet connection.</p>
     </div>
   </div>
-  <!-- Entry point - MUST specify data-type="module" and extension -->
-  <script type="text/babel" data-type="module" src="index.tsx"></script>
+
+  <!-- Note the presets: react and typescript are required for .tsx files -->
+  <script type="text/babel" data-type="module" data-presets="react,typescript" src="./index.tsx"></script>
 </body>
 </html>

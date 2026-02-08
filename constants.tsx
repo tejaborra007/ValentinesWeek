@@ -1,5 +1,4 @@
-
-import { ValentineDay } from './types';
+import { ValentineDay } from './types.ts';
 
 export const VALENTINE_DAYS: ValentineDay[] = [
   {
