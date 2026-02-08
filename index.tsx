@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef } from 'react';
 import ReactDOM from 'react-dom/client';
 import { GoogleGenAI, Type } from "@google/genai";
 
@@ -68,40 +68,83 @@ function getFallbackMessage(dayName: string): LoveMessage {
 
 // --- Components ---
 
+const MusicPlayer: React.FC = () => {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  const toggleMusic = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play().catch(e => console.error("Playback blocked by browser settings.", e));
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
+
+  return (
+    <div className="fixed bottom-8 right-8 z-[100] group">
+      <audio 
+        ref={audioRef} 
+        loop 
+        src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" 
+      />
+      <button 
+        onClick={toggleMusic}
+        className={`relative w-16 h-16 rounded-full flex items-center justify-center shadow-[0_10px_40px_rgba(225,29,72,0.4)] transition-all duration-500 transform hover:scale-110 active:scale-95 border-2 ${
+          isPlaying 
+            ? 'bg-rose-500 border-rose-400 scale-105' 
+            : 'bg-white/80 backdrop-blur-md border-pink-100 text-rose-500'
+        }`}
+      >
+        {isPlaying ? (
+          <div className="flex items-end space-x-1 h-6">
+            <div className="w-1 bg-white rounded-full animate-[bounce_0.6s_infinite] h-3"></div>
+            <div className="w-1 bg-white rounded-full animate-[bounce_0.8s_infinite] h-5"></div>
+            <div className="w-1 bg-white rounded-full animate-[bounce_0.5s_infinite] h-2"></div>
+            <div className="w-1 bg-white rounded-full animate-[bounce_0.7s_infinite] h-4"></div>
+          </div>
+        ) : (
+          <span className="text-3xl">🎵</span>
+        )}
+        
+        {/* Tooltip */}
+        <div className="absolute right-20 bg-gray-900 text-white text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-xl">
+          {isPlaying ? "Pause Music" : "Play Romantic Music"}
+        </div>
+      </button>
+      
+      {/* Visual pulse behind button */}
+      {isPlaying && (
+        <div className="absolute inset-0 rounded-full bg-rose-500 animate-ping opacity-20 -z-10"></div>
+      )}
+    </div>
+  );
+};
+
 const HuggingAnimation: React.FC = () => {
   return (
     <div className="relative w-full h-48 overflow-visible mb-12 select-none pointer-events-none flex items-center justify-center">
-      {/* Scenic Background Clouds/Mist */}
       <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-pink-50/50 to-transparent blur-3xl opacity-50"></div>
-      
-      {/* Branches decoration mimicking the image */}
       <div className="absolute bottom-2 left-1/4 opacity-20 transform scale-x-[-1]">🌿</div>
       <div className="absolute bottom-2 right-1/4 opacity-20">🌿</div>
-
-      {/* Characters Container */}
       <div className="relative w-full max-w-2xl h-full overflow-hidden">
-        {/* Boy walking */}
         <div className="absolute top-1/2 -translate-y-1/2 animate-walk-left">
           <div className="text-7xl drop-shadow-2xl animate-bob filter contrast-125">
              <span className="grayscale-[0.2]">👦</span>
           </div>
         </div>
-        
-        {/* Girl walking */}
         <div className="absolute top-1/2 -translate-y-1/2 animate-walk-right">
           <div className="text-7xl drop-shadow-2xl animate-bob filter contrast-125">
             <span className="grayscale-[0.2]">👧</span>
           </div>
         </div>
-
-        {/* The Hug/Moment of Contact */}
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 animate-hug-bloom">
           <div className="text-8xl drop-shadow-[0_20px_50px_rgba(225,29,72,0.3)]">
             👩‍❤️‍👨
           </div>
         </div>
-
-        {/* Exploding Hearts at meeting point */}
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
            {[...Array(5)].map((_, i) => (
              <div key={i} className="absolute text-2xl animate-burst" style={{ animationDelay: `${5 + i*0.1}s`, left: `${(i-2)*15}px` }}>❤️</div>
@@ -238,6 +281,7 @@ const App: React.FC = () => {
       <div className="fixed top-[-10%] left-[-10%] w-[50%] h-[50%] bg-pink-100 rounded-full blur-[150px] opacity-40 -z-5 pointer-events-none" />
       
       <FallingHearts />
+      <MusicPlayer />
       
       <header className="pt-24 pb-12 px-6 text-center relative z-10 w-full max-w-5xl">
         <HuggingAnimation />
