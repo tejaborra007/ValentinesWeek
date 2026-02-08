@@ -70,16 +70,37 @@ function getFallbackMessage(dayName: string): LoveMessage {
 
 const MusicPlayer: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isError, setIsError] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const playPromiseRef = useRef<Promise<void> | null>(null);
 
-  const toggleMusic = () => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.pause();
-      } else {
-        audioRef.current.play().catch(e => console.error("Playback blocked by browser settings.", e));
+  const toggleMusic = async () => {
+    if (!audioRef.current) return;
+
+    if (isPlaying) {
+      // Ensure any pending play request is resolved before pausing
+      if (playPromiseRef.current) {
+        try {
+          await playPromiseRef.current;
+        } catch (e) {
+          // Play was already rejected, safe to proceed
+        }
       }
-      setIsPlaying(!isPlaying);
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      try {
+        setIsError(false);
+        playPromiseRef.current = audioRef.current.play();
+        await playPromiseRef.current;
+        setIsPlaying(true);
+      } catch (e) {
+        console.error("Playback failed:", e);
+        setIsError(true);
+        setIsPlaying(false);
+      } finally {
+        playPromiseRef.current = null;
+      }
     }
   };
 
@@ -88,7 +109,8 @@ const MusicPlayer: React.FC = () => {
       <audio 
         ref={audioRef} 
         loop 
-        src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" 
+        preload="auto"
+        src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-15.mp3" 
       />
       <button 
         onClick={toggleMusic}
@@ -96,7 +118,7 @@ const MusicPlayer: React.FC = () => {
           isPlaying 
             ? 'bg-rose-500 border-rose-400 scale-105' 
             : 'bg-white/80 backdrop-blur-md border-pink-100 text-rose-500'
-        }`}
+        } ${isError ? 'ring-2 ring-red-400' : ''}`}
       >
         {isPlaying ? (
           <div className="flex items-end space-x-1 h-6">
@@ -106,12 +128,12 @@ const MusicPlayer: React.FC = () => {
             <div className="w-1 bg-white rounded-full animate-[bounce_0.7s_infinite] h-4"></div>
           </div>
         ) : (
-          <span className="text-3xl">🎵</span>
+          <span className="text-3xl">{isError ? '⚠️' : '🎵'}</span>
         )}
         
         {/* Tooltip */}
         <div className="absolute right-20 bg-gray-900 text-white text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-xl">
-          {isPlaying ? "Pause Music" : "Play Romantic Music"}
+          {isError ? "Error: Interact with page first" : (isPlaying ? "Pause Romance" : "Play Romantic Music")}
         </div>
       </button>
       
