@@ -1,7 +1,6 @@
-
 import React, { useState } from 'react';
-import { ValentineDay, LoveMessage } from '../types';
-import { generateLoveMessage } from '../services/geminiService';
+import { ValentineDay, LoveMessage } from '../types.ts';
+import { generateLoveMessage } from '../services/geminiService.ts';
 
 interface Props {
   day: ValentineDay;
@@ -82,7 +81,6 @@ const ValentineCard: React.FC<Props> = ({ day }) => {
         {/* Back Side */}
         <div className="absolute inset-0 backface-hidden rotate-y-180">
           <div className={`h-full w-full ${day.color} text-white rounded-3xl p-8 flex flex-col justify-center items-center text-center relative overflow-hidden shadow-2xl`}>
-            {/* Background Texture/Sparkle */}
             <div className="absolute inset-0 opacity-10 pointer-events-none">
               <div className="grid grid-cols-5 grid-rows-8 h-full w-full">
                 {Array.from({ length: 40 }).map((_, i) => (
@@ -128,7 +126,6 @@ const ValentineCard: React.FC<Props> = ({ day }) => {
             ) : null}
           </div>
         </div>
-
       </div>
     </div>
   );

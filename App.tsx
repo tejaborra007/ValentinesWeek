@@ -1,8 +1,7 @@
-
 import React from 'react';
-import { VALENTINE_DAYS } from './constants';
-import ValentineCard from './components/ValentineCard';
-import FloatingHearts from './components/FloatingHearts';
+import { VALENTINE_DAYS } from './constants.tsx';
+import ValentineCard from './components/ValentineCard.tsx';
+import FloatingHearts from './components/FloatingHearts.tsx';
 
 const App: React.FC = () => {
   return (
